@@ -12,13 +12,13 @@ This key is passed via the `X-Pets-Token` HTTP header.
 
 ### List all pets
 
-GET /pets
+`GET /pets`
 
 ### Create pet
 
-POST /pets.
+`POST /pets`
 
-JSON:
+JSON payload:
 
 ```
 {
@@ -33,7 +33,7 @@ JSON:
 
 ### Get pet
 
-GET /pets/:id
+`GET /pets/:id`
 
 ## Environments
 
