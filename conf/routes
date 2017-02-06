@@ -1,0 +1,7 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /pets           com.wunder.pets.web.controllers.PetsController.all
+GET    /pets/:id        com.wunder.pets.web.controllers.PetsController.find(id: java.util.UUID)
+POST   /pets            com.wunder.pets.web.controllers.PetsController.create

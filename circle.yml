@@ -1,0 +1,36 @@
+machine:
+  timezone: America/Denver
+  java:
+    version: openjdk8
+  environment:
+    JDBC_DATABASE_URL:
+      jdbc:postgresql://localhost/circle_test?user=ubuntu
+
+dependencies:
+  # Cache the resolution-cache and build streams to speed things up
+  cache_directories:
+    - "~/.sbt"
+    - "target/resolution-cache"
+    - "target/streams"
+    - "project/target/resolution-cache"
+    - "project/target/streams"
+  override:
+    - sbt test:compile
+
+test:
+  pre:
+    - "./bin/migrateDB $JDBC_DATABASE_URL"
+  override:
+    - sbt test
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - "git push git@heroku.com:wunder-koalify-staging.git $CIRCLE_SHA1:refs/heads/master"
+      - "heroku run './bin/migrateDB $JDBC_DATABASE_URL' -a wunder-koalify-staging  --exit-code"
+  production:
+    tag: /release-.*/
+    commands:
+      - "git push git@heroku.com:wunder-koalify-production.git $CIRCLE_SHA1:refs/heads/master"
+      - "heroku run './bin/migrateDB $JDBC_DATABASE_URL' -a wunder-koalify-production --exit-code"

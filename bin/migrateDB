@@ -1,0 +1,10 @@
+#!/bin/bash
+
+url=${1:-$JDBC_DATABASE_URL}
+
+if [ -z "$url" ]; then
+  echo 1>&2 "$0: Please provide a JDBC database URL"
+  exit 1
+fi
+
+pushd database && sbt flywayMigrate -Dflyway.url=$url && popd
