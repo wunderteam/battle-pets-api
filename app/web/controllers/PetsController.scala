@@ -9,14 +9,15 @@ import com.wunder.pets.web.Serializers._
 import play.api.libs.json._
 import play.api.mvc.{Controller, _}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PetsController @Inject()(findPet: Find[Pet], createPet: Create[CreatePetForm, Pet], allPets: All[Pet])
                               (implicit ec: ExecutionContext) extends Controller with CrudController {
 
   def all() = Action.async {
-    allPets().map(pets => Ok(Json.toJson(pets)))
+    Future.successful(Ok("Pets"))
+//    allPets().map(pets => Ok(Json.toJson(pets)))
   }
 
   def find(id: UUID) = Action.async {

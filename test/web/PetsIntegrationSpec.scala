@@ -26,11 +26,18 @@ class PetsIntegrationSpec extends IntegrationSpec  with AuthRequest {
       val wsClient = app.injector.instanceOf[WSClient]
       val endpoint = s"http://localhost:$port/pets"
 
+      val expectedName = "Bob"
       val expectedStrength = 42
+      val expectedSpeed = 10
+      val expectedIntelligence = 20
+      val expectedIntegrity = 30
 
       val data = Json.obj(
         "strength" -> expectedStrength,
-        "name" -> "Bob"
+        "name" -> expectedName,
+        "speed" -> expectedSpeed,
+        "intelligence" -> expectedIntelligence,
+        "integrity" -> expectedIntegrity
       )
 
       val createResponse = await(authenticated(wsClient.url(endpoint)).post(data))
@@ -41,12 +48,12 @@ class PetsIntegrationSpec extends IntegrationSpec  with AuthRequest {
 
       val response = await(authenticated(wsClient.url(s"$endpoint/$createdId")).get())
 
-      println(response.body)
-      response.status.mustBe(OK)
       val petJson = Json.parse(createResponse.body)
-      val strength = (petJson \ "strength").as[Int]
-
-      strength.mustBe(expectedStrength)
+      (petJson \ "name").as[String].mustBe(expectedName)
+      (petJson \ "strength").as[Int].mustBe(expectedStrength)
+      (petJson \ "speed").as[Int].mustBe(expectedSpeed)
+      (petJson \ "intelligence").as[Int].mustBe(expectedIntelligence)
+      (petJson \ "integrity").as[Int].mustBe(expectedIntegrity)
     }
   }
 }

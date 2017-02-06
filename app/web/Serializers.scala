@@ -4,7 +4,7 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-import com.wunder.pets.pets.{CreatePetForm, Pet, Strength}
+import com.wunder.pets.pets._
 import com.wunder.pets.validations.Validations.ErrorMessages
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -26,19 +26,36 @@ object Serializers {
     )
   }
 
-  implicit val petStrengthWrites = new Writes[Strength] {
-    override def writes(o: Strength): JsValue = JsNumber(o.value)
+  def newAttributeWriter[T <: PetAttribute]: Writes[T] = {
+    new Writes[T] {
+      override def writes(o: T): JsValue = JsNumber(o.value)
+    }
+  }
+
+  implicit val petStrengthWrites = newAttributeWriter[Strength]
+  implicit val petSpeedWrites = newAttributeWriter[Speed]
+  implicit val petIntelligenceWrites = newAttributeWriter[Intelligence]
+  implicit val petIntegrityWrites = newAttributeWriter[Integrity]
+  implicit val petNameWrites = new Writes[Name] {
+    override def writes(o: Name): JsValue = JsString(o.value)
   }
 
   implicit val petWrites = new Writes[Pet] {
     override def writes(o: Pet): JsValue = Json.obj(
       "id" -> Json.toJson(o.id),
-      "strength" -> Json.toJson(o.strength.value)
+      "name" -> Json.toJson(o.name),
+      "strength" -> Json.toJson(o.strength),
+      "speed" -> Json.toJson(o.speed),
+      "intelligence" -> Json.toJson(o.intelligence),
+      "integrity" -> Json.toJson(o.integrity)
     )
   }
 
   implicit val createPetFormReads: Reads[CreatePetForm] = (
-    (JsPath \ "strength").read[Int] and
-      (JsPath \ "name").read[String]
+    (JsPath \ "name").read[String] and
+      (JsPath \ "strength").read[Int] and
+      (JsPath \ "speed").read[Int] and
+      (JsPath \ "intelligence").read[Int] and
+      (JsPath \ "integrity").read[Int]
     ) (CreatePetForm.apply _)
 }

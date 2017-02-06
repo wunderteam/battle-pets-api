@@ -22,14 +22,21 @@ class PersistentPetRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
 
     implicit val nameColumnType = MappedColumnType.base[Name, String](_.value, Name(_))
     implicit val strengthColumnType = MappedColumnType.base[Strength, Int](_.value, Strength(_))
+    implicit val speedColumnType = MappedColumnType.base[Speed, Int](_.value, Speed(_))
+    implicit val intelligenceColumnType = MappedColumnType.base[Intelligence, Int](_.value, Intelligence(_))
+    implicit val integrityColumnType = MappedColumnType.base[Integrity, Int](_.value, Integrity(_))
+
+
 
     def id = column[UUID]("id", O.PrimaryKey)
 
     def strength = column[Strength]("strength")
-
+    def speed = column[Speed]("speed")
+    def intelligence = column[Intelligence]("intelligence")
+    def integrity = column[Integrity]("integrity")
     def name = column[Name]("name")
 
-    def * = (id, strength, name) <> ((Pet.apply _).tupled, Pet.unapply)
+    def * = (id, name, strength, speed, intelligence, integrity) <> ((Pet.apply _).tupled, Pet.unapply)
   }
 
   private val pets = TableQuery[PetsTable]
@@ -42,9 +49,9 @@ class PersistentPetRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
     Validations.assureUnique[Pet](dbAction)
   }
 
-  def list(): Future[Seq[Pet]] = db.run {
-    pets.result
-  }
+//  def list(): Future[List[Pet]] = db.run {
+//    pets.result
+//  }
 
   def find(id: UUID): Future[Option[Pet]] = db.run {
     pets.filter(_.id === id).result.headOption

@@ -9,5 +9,5 @@ import scala.concurrent.Future
 object Entity {
   type Create[DATA, ENTITY] = DATA => Future[WithValidationErrors[ENTITY]]
   type Find[ENTITY] = UUID => Future[Option[ENTITY]]
-  type All[ENTITY] = () => Future[Seq[ENTITY]]
+  type All[ENTITY] = () => Future[List[ENTITY]]
 }
