@@ -1,3 +1,3 @@
-web: target/universal/stage/bin/koalify -Dhttp.port=${PORT} -Dnewrelic.environment=${ENVIRONMENT} -J-javaagent:/app/target/universal/stage/lib/com.newrelic.agent.java.newrelic-agent-3.35.2.jar -J-Dnewrelic.config.file=conf/newrelic.yml
+web: target/universal/stage/bin/pet-api -Dhttp.port=${PORT}
 
 migration: ./bin/migrateDB $JDBC_DATABASE_URL

@@ -10,12 +10,13 @@ This API is used to store pets for the BattlePets coding challenge.
 
 ### Get pet
 
-[![CircleCI](https://circleci.com/gh/wunderteam/xxxx/tree/master.svg?style=svg&circle-token=xxxxx)](https://circleci.com/gh/wunderteam/xxxx/tree/master)
+[![CircleCI](https://circleci.com/gh/wunderteam/battle-pets-api.svg?style=svg&circle-token=a3873feb3d77f83373634ede1de3cf521432f5d5)](https://circleci.com/gh/wunderteam/battle-pets-api)
 
 ## Environments
 
 ### Staging
 
+https://wunder-pet-api-staging.herokuapp.com/
 
 ## Deploying
 
@@ -25,11 +26,6 @@ Deployment to staging is automatically done after a successful build on CircleCI
 
 
 ## Deploying
-
-Deployment to production is done via CircleCI by creating a tag on the master branch. One easy way to do this is to use GitHub releases:
-https://help.github.com/articles/creating-releases/
-
-The tag format is `release-YYYYMMDDHHMM`.
 
 ### API keys
 
