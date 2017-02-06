@@ -1,16 +1,39 @@
 # Pet API
 
+[![CircleCI](https://circleci.com/gh/wunderteam/battle-pets-api.svg?style=svg&circle-token=a3873feb3d77f83373634ede1de3cf521432f5d5)](https://circleci.com/gh/wunderteam/battle-pets-api)
+
 This API is used to store pets for the BattlePets coding challenge.
 
 ## Endpoints:
 
+All endpoints require an API to access. Please email you contact at Wunder for the current API key.
+
+This key is passed via the `X-Pets-Token` HTTP header.
+
 ### List all pets
+
+GET /pets
 
 ### Create pet
 
+POST /pets.
+
+JSON:
+
+```
+{
+	"name": "Fluffy",
+	"strength": 12,
+	"intelligence": 22,
+	"speed": 21,
+	"integrity": 66
+}
+
+```
+
 ### Get pet
 
-[![CircleCI](https://circleci.com/gh/wunderteam/battle-pets-api.svg?style=svg&circle-token=a3873feb3d77f83373634ede1de3cf521432f5d5)](https://circleci.com/gh/wunderteam/battle-pets-api)
+GET /pets/:id
 
 ## Environments
 
@@ -18,20 +41,16 @@ This API is used to store pets for the BattlePets coding challenge.
 
 https://wunder-pet-api-staging.herokuapp.com/
 
-## Deploying
+#### Deploying
 
 Deployment to staging is automatically done after a successful build on CircleCI.
 
 ### Production
 
 
-## Deploying
+#### Deploying
 
-### API keys
-
-All API endpoints are protected by a single API key/environment. They are passed via the `X-Pets-Token` HTTP header.
-
-## Running app
+## Running locally app
 
 `sbt ~run` - this will recompile if files change
 
