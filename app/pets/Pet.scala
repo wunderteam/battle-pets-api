@@ -72,9 +72,8 @@ object Pet {
     validatedPet.fold(handleValidationErrors, validPet)
   }
 
-  def all(petRepo: PetRepository)(): Future[List[Pet]] =
-  //    petRepo.list()
-    Future.successful(List())
+  def all(petRepo: PetRepository)() =
+      petRepo.list()
 
   def find(petRepository: PetRepository)(id: UUID)(implicit executionContext: ExecutionContext): Future[Option[Pet]] =
     petRepository.find(id)

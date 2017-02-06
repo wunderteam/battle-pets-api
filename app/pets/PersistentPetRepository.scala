@@ -49,9 +49,9 @@ class PersistentPetRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
     Validations.assureUnique[Pet](dbAction)
   }
 
-//  def list(): Future[List[Pet]] = db.run {
-//    pets.result
-//  }
+  def list(): Future[Seq[Pet]] = db.run {
+    pets.result
+  }
 
   def find(id: UUID): Future[Option[Pet]] = db.run {
     pets.filter(_.id === id).result.headOption
