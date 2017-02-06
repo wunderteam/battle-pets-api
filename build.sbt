@@ -6,8 +6,6 @@ version := "1.0-SNAPSHOT"
 
 enablePlugins(PlayScala)
 
-resolvers += Resolver.bintrayRepo("hmrc", "releases")
-
 libraryDependencies ++= Seq(
   cache,
   filters,
@@ -15,8 +13,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "2.0.2",
   "org.postgresql" % "postgresql" % "9.4.1212",
   "org.typelevel" %% "cats" % "0.8.1",
-  "com.newrelic.agent.java" % "newrelic-agent" % "3.35.2",
-  "com.newrelic.agent.java" % "newrelic-api" % "3.35.2",
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
 )
 
