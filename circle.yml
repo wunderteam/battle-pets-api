@@ -27,10 +27,10 @@ deployment:
   staging:
     branch: master
     commands:
-      - "git push git@heroku.com:wunder-koalify-staging.git $CIRCLE_SHA1:refs/heads/master"
-      - "heroku run './bin/migrateDB $JDBC_DATABASE_URL' -a wunder-koalify-staging  --exit-code"
-  production:
-    tag: /release-.*/
-    commands:
-      - "git push git@heroku.com:wunder-koalify-production.git $CIRCLE_SHA1:refs/heads/master"
-      - "heroku run './bin/migrateDB $JDBC_DATABASE_URL' -a wunder-koalify-production --exit-code"
+      - "git push git@heroku.com:wunder-pet-api-staging.git $CIRCLE_SHA1:refs/heads/master"
+      - "heroku run './bin/migrateDB $JDBC_DATABASE_URL' -a wunder-pet-api-staging  --exit-code"
+#  production:
+#    tag: /release-.*/
+#    commands:
+#      - "git push git@heroku.com:wunder-pet-api-production.git $CIRCLE_SHA1:refs/heads/master"
+#      - "heroku run './bin/migrateDB $JDBC_DATABASE_URL' -a wunder-pet-api-production --exit-code"
