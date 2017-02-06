@@ -3,10 +3,10 @@ package com.wunder.pets.pets
 import java.util.UUID
 
 import cats.implicits._
-import com.wunder.pets.validations.{GreaterThan, NonEmptyString}
 import com.wunder.pets.validations.Validations._
+import com.wunder.pets.validations.{GreaterThan, NonEmptyString}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 
 case class Pet(id: UUID, name: Name, strength: Strength, speed: Speed, intelligence: Intelligence, integrity: Integrity)
@@ -49,8 +49,12 @@ object Integrity extends GreaterThan[Int] {
 case class CreatePetForm(name: String, strength: Int, speed: Int, intelligence: Int, integrity: Int)
 
 object Pet {
-  def create(petRepo: PetRepository)(formData: CreatePetForm)(implicit executionContext: ExecutionContext) = {
+  def create(petRepo: PetRepository)(formData: CreatePetForm) = {
     val validatedPet = (
+      // cleaning up the () => Pet() syntax would be nice.
+      // bonus points if you can figure out a way to use curry/uncurry to
+      // make this happen.
+
       Name.validated(formData.name)
         |@| Strength.validated(formData.strength)
         |@| Speed.validated(formData.speed)
@@ -75,7 +79,7 @@ object Pet {
   def all(petRepo: PetRepository)() =
       petRepo.list()
 
-  def find(petRepository: PetRepository)(id: UUID)(implicit executionContext: ExecutionContext): Future[Option[Pet]] =
+  def find(petRepository: PetRepository)(id: UUID): Future[Option[Pet]] =
     petRepository.find(id)
 }
 
