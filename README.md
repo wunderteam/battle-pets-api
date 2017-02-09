@@ -6,7 +6,7 @@ This API is used to store pets for the BattlePets coding challenge.
 
 ## Endpoints:
 
-All endpoints require an API to access. Please email you contact at Wunder for the current API key.
+All endpoints require an API key to access. Please email you contact at Wunder for the current API key.
 
 This key is passed via the `X-Pets-Token` HTTP header.
 
