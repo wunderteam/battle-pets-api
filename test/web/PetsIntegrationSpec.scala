@@ -26,7 +26,7 @@ class PetsIntegrationSpec extends IntegrationSpec  with AuthRequest {
       val wsClient = app.injector.instanceOf[WSClient]
       val endpoint = s"http://localhost:$port/pets"
 
-      val expectedName = "Bob"
+      val expectedName = "Bobby"
       val expectedStrength = 42
       val expectedSpeed = 10
       val expectedIntelligence = 20

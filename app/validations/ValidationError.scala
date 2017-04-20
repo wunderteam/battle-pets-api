@@ -16,6 +16,10 @@ final class NotGreaterThan[T](val field: String, val lowerBound: T) extends Vali
   def message: String = s"$field must be greater than $lowerBound"
 }
 
+final class NotLessThan[T](val field: String, val upperBound: T) extends ValidationError {
+  def message: String = s"$field must be less than $upperBound"
+}
+
 final class DuplicateValue(val e: PSQLException) extends ValidationError {
   override def message: String = {
     val regex = "Key \\((.*)\\)=\\((.*)\\) already exists."
@@ -29,15 +33,3 @@ final class DuplicateValue(val e: PSQLException) extends ValidationError {
 }
 
 final class GeneralError(val message: String) extends ValidationError
-
-final class InvalidZipCode(val value: String) extends ValidationError {
-  override def message: String = s"$value is an invalid zip code."
-}
-
-final class InvalidEmail(val value: String) extends ValidationError {
-  override def message: String = s"$value is an invalid email."
-}
-
-final class InvalidPhoneNumber(value: String) extends ValidationError {
-  override def message: String = s"$value is an invalid phone number."
-}

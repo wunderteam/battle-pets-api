@@ -4,7 +4,10 @@ import java.util.UUID
 
 import cats.implicits._
 import com.wunder.pets.validations.Validations._
-import com.wunder.pets.validations.{GreaterThan, NonEmptyString}
+import com.wunder.pets.validations.{IsEmpty, NotGreaterThan, NotLessThan}
+import eu.timepit.refined._
+import eu.timepit.refined.collection.{MaxSize, MinSize, NonEmpty}
+import eu.timepit.refined.numeric.Positive
 
 import scala.concurrent.Future
 
@@ -18,32 +21,49 @@ trait PetAttribute extends Any {
 
 case class Name private(value: String) extends AnyVal
 
-object Name extends NonEmptyString {
-  def validated(name: String) = validate("Pet name")(name).map(new Name(_))
+object Name {
+  def from(v: String): Validated[Name] = {
+    val notEmpty: Validated[String] =
+      validate[String, NonEmpty](v, new IsEmpty("Pet name"))
+
+    type LongerThan4 = MinSize[W.`5`.T]
+
+    val minimumLength: Validated[String] =
+      validate[String, LongerThan4](v, new NotGreaterThan("Pet name", 4))
+
+    type ShorterThan20 = MaxSize[W.`20`.T]
+    val maximumLength = validate[String, ShorterThan20](v, new NotLessThan("Pet name", 20))
+
+    (minimumLength and notEmpty and maximumLength).map(new Name(_))
+  }
 }
 
 case class Strength private(value: Int) extends AnyVal with PetAttribute
 
-object Strength extends GreaterThan[Int] {
-  def validated(s: Int) = validate(field = "Strength", lowerBound = 0)(s).map(new Strength(_))
+object Strength {
+  def from(v: Int): Validated[Strength] =
+    validate[Int, Positive](v, new NotGreaterThan("Pet strength", 0)).map(new Strength(_))
 }
 
 case class Speed private(value: Int) extends AnyVal with PetAttribute
 
-object Speed extends GreaterThan[Int] {
-  def validated(s: Int) = validate(field = "Speed", lowerBound = 0)(s).map(new Speed(_))
+object Speed {
+  def from(v: Int): Validated[Speed] =
+    validate[Int, Positive](v, new NotGreaterThan("Pet speed", 0)).map(new Speed(_))
 }
 
 case class Intelligence private(value: Int) extends AnyVal with PetAttribute
 
-object Intelligence extends GreaterThan[Int] {
-  def validated(s: Int) = validate(field = "Intelligence", lowerBound = 0)(s).map(new Intelligence(_))
+object Intelligence {
+  def from(v: Int): Validated[Intelligence] =
+    validate[Int, Positive](v, new NotGreaterThan("Pet intelligence", 0)).map(new Intelligence(_))
 }
 
 case class Integrity private(value: Int) extends AnyVal with PetAttribute
 
-object Integrity extends GreaterThan[Int] {
-  def validated(s: Int) = validate(field = "Integrity", lowerBound = 0)(s).map(new Integrity(_))
+object Integrity {
+  def from(v: Int): Validated[Integrity] =
+    validate[Int, Positive](v, new NotGreaterThan("Pet integrity", 0)).map(new Integrity(_))
 }
 
 case class CreatePetForm(name: String, strength: Int, speed: Int, intelligence: Int, integrity: Int)
@@ -55,11 +75,11 @@ object Pet {
       // bonus points if you can figure out a way to use curry/uncurry to
       // make this happen.
 
-      Name.validated(formData.name)
-        |@| Strength.validated(formData.strength)
-        |@| Speed.validated(formData.speed)
-        |@| Intelligence.validated(formData.intelligence)
-        |@| Integrity.validated(formData.integrity)
+      Name.from(formData.name)
+        |@| Strength.from(formData.strength)
+        |@| Speed.from(formData.speed)
+        |@| Intelligence.from(formData.intelligence)
+        |@| Integrity.from(formData.integrity)
       ).map(
       (name, strength, speed, intelligence, integrity) => Pet(
         id = UUID.randomUUID(),
