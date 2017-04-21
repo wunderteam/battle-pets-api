@@ -6,8 +6,6 @@ import eu.timepit.refined.api.Validate
 import eu.timepit.refined.refineV
 import org.postgresql.util.PSQLException
 
-import scala.concurrent.{ExecutionContext, Future}
-
 object Validations {
   type Validated[T] = ValidatedNel[ValidationError, T]
   type Errors = NonEmptyList[ValidationError]
@@ -22,10 +20,10 @@ object Validations {
     data.Validated.fromEither(validated)
   }
 
-  def assureUnique[T](f: Future[WithValidationErrors[T]])(implicit executionContext: ExecutionContext) = f.recoverWith {
+  def assureUnique[T]: PartialFunction[Throwable, WithValidationErrors[T]] = {
     case e: PSQLException => {
       val errors: Errors = dbError(e)
-      handleValidationErrors(errors)
+      Left(errors.map(_.message).toList)
     }
   }
 
@@ -40,5 +38,5 @@ object Validations {
     NonEmptyList(error, Nil)
   }
 
-  def handleValidationErrors[T](errors: Errors): Future[WithValidationErrors[T]] = Future.successful(Left(errors.map(_.message).toList))
+  def toErrorMessages[T](errors: Errors): WithValidationErrors[T] = Left(errors.map(_.message).toList)
 }
