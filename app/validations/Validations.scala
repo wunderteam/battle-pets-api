@@ -22,8 +22,7 @@ object Validations {
 
   def assureUnique[T]: PartialFunction[Throwable, WithValidationErrors[T]] = {
     case e: PSQLException => {
-      val errors: Errors = dbError(e)
-      Left(errors.map(_.message).toList)
+      toErrorMessages(dbError(e))
     }
   }
 
