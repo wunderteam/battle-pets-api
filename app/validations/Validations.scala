@@ -10,7 +10,7 @@ object Validations {
   type Validated[T] = ValidatedNel[ValidationError, T]
   type Errors = NonEmptyList[ValidationError]
   type ErrorMessages = Seq[String]
-  type WithValidationErrors[T] = Either[ErrorMessages, T]
+  type WithErrorMessages[T] = Either[ErrorMessages, T]
 
   def validate[VALUE, VALIDATION](v: VALUE, e: ValidationError)
                                  (implicit validation: Validate[VALUE, VALIDATION]): Validated[VALUE] = {
@@ -20,7 +20,7 @@ object Validations {
     data.Validated.fromEither(validated)
   }
 
-  def assureUnique[T]: PartialFunction[Throwable, WithValidationErrors[T]] = {
+  def assureUnique[T]: PartialFunction[Throwable, WithErrorMessages[T]] = {
     case e: PSQLException => {
       toErrorMessages(dbError(e))
     }
@@ -37,5 +37,5 @@ object Validations {
     NonEmptyList(error, Nil)
   }
 
-  def toErrorMessages[T](errors: Errors): WithValidationErrors[T] = Left(errors.map(_.message).toList)
+  def toErrorMessages[T](errors: Errors): WithErrorMessages[T] = Left(errors.map(_.message).toList)
 }

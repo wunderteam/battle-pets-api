@@ -69,7 +69,7 @@ object Integrity {
 case class CreatePetForm(name: String, strength: Int, speed: Int, intelligence: Int, integrity: Int)
 
 object Pet {
-  def create(petRepo: PetRepository)(formData: CreatePetForm): Future[WithValidationErrors[Pet]] = {
+  def create(petRepo: PetRepository)(formData: CreatePetForm): Future[WithErrorMessages[Pet]] = {
     val validatedPet = (
       // cleaning up the () => Pet() syntax would be nice.
       // bonus points if you can figure out a way to use curry/uncurry to
@@ -92,7 +92,7 @@ object Pet {
     )
 
     def validPet(p: Pet) = petRepo.create(p)
-    val handleErrors: (Errors) => Future[WithValidationErrors[Pet]] = (toErrorMessages _).andThen(Future.successful)
+    val handleErrors: (Errors) => Future[WithErrorMessages[Pet]] = (toErrorMessages _).andThen(Future.successful)
 
     validatedPet.fold(handleErrors, validPet)
   }

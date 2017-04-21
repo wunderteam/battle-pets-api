@@ -4,7 +4,7 @@ import java.util.UUID
 import javax.inject.{Inject, Singleton}
 
 import com.wunder.pets.validations.Validations
-import com.wunder.pets.validations.Validations.{ErrorMessages, WithValidationErrors}
+import com.wunder.pets.validations.Validations.{ErrorMessages, WithErrorMessages}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 
@@ -41,7 +41,7 @@ class PersistentPetRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
 
   private val pets = TableQuery[PetsTable]
 
-  def create(pet: Pet): Future[WithValidationErrors[Pet]] = {
+  def create(pet: Pet): Future[WithErrorMessages[Pet]] = {
     val dbAction = db.run {
       // TODO: Does this leak that WithValidationErrors is an Either under the hood?
       // Do we care?

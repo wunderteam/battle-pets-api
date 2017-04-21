@@ -1,6 +1,6 @@
 package com.wunder.pets.web.controllers
 
-import com.wunder.pets.validations.Validations.{ErrorMessages, WithValidationErrors}
+import com.wunder.pets.validations.Validations.{ErrorMessages, WithErrorMessages}
 import play.api.data.validation.ValidationError
 import play.api.libs.json._
 import play.api.mvc.Results._
@@ -12,8 +12,8 @@ trait CrudController {
 
   import com.wunder.pets.web.Serializers._
 
-  protected def createEntity[DATA, ENTITY](request: Request[JsValue], create: DATA => Future[WithValidationErrors[ENTITY]])(implicit r: Reads[DATA], w: Writes[ENTITY], executionContext: ExecutionContext): Future[Result] = {
-    val entityToResult = (validatedEntity: Future[WithValidationErrors[ENTITY]]) => {
+  protected def createEntity[DATA, ENTITY](request: Request[JsValue], create: DATA => Future[WithErrorMessages[ENTITY]])(implicit r: Reads[DATA], w: Writes[ENTITY], executionContext: ExecutionContext): Future[Result] = {
+    val entityToResult = (validatedEntity: Future[WithErrorMessages[ENTITY]]) => {
       validatedEntity.map(_.fold(createFailure, createSuccess[ENTITY]))
     }
 
