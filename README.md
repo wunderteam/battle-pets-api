@@ -1,78 +1,143 @@
-# Pet API
+# Pets API
 
 [![CircleCI](https://circleci.com/gh/wunderteam/battle-pets-api.svg?style=svg&circle-token=a3873feb3d77f83373634ede1de3cf521432f5d5)](https://circleci.com/gh/wunderteam/battle-pets-api)
 
-This API is used to store pets for the BattlePets coding challenge.
+JSON API for provisioning and managing pets as part of the Wunder BattlePets coding challenge.
 
-## Endpoints:
+## Usage
 
-All endpoints require an API key to access. Please email your contact at Wunder for the current API key.
+The API is hosted at https://wunder-pet-api-staging.herokuapp.com/
 
-This key is passed via the `X-Pets-Token` HTTP header.
+### Authentication
 
-### List all pets
+All endpoints require a valid API token. Ask your contact at Wunder for a token.
 
-`GET /pets`
+Include the token in the `X-Pets-Token` HTTP header.
 
-### Create pet
+### Responses
 
-`POST /pets`
+All responses will be encoded as JSON. As such, ensure you include an `Accept: application/json` HTTP header.
 
-JSON payload:
+HTTP status codes are used as follows:
+
+* `200`: ok
+* `201`: pet created
+* `400`: malformed request JSON
+* `404`: pet not found
+* `422`: pet not valid
+
+### Errors
+
+On failure, the response will include the appropriate HTTP status code and any errors encoded as JSON.
 
 ```
-{
-	"name": "Fluffy",
-	"strength": 12,
-	"intelligence": 22,
-	"speed": 21,
-	"integrity": 66
-}
-
+{"errors":["Pet name cannot be empty.","Pet integrity must be greater than 0."]}
 ```
 
-### Get pet
+### Endpoints
 
-`GET /pets/:id`
+#### `POST /pets`
 
-## Environments
+Create a pet.
 
-### Staging
+The POST body should be encoded as JSON.
 
-https://wunder-pet-api-staging.herokuapp.com/
+```
+$ curl \
+    -H 'X-Pets-Token: <your-token>' \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{ "name": "Fluffy", "strength": 12, "intelligence": 22, "speed": 21, "integrity": 66 }' \
+    https://wunder-pet-api-staging.herokuapp.com/pets
 
-#### Deploying
+{"id":"d44c512d-65f2-4173-a7aa-a1ebc8cc52d6","name":"Fluffy","strength":12,"intelligence":22,"speed":21,"integrity":66}
+```
 
-Deployment to staging is automatically done after a successful build on CircleCI.
+#### `GET /pets`
 
-### Production
+Get all pets.
 
+```
+$ curl \
+    -H 'X-Pets-Token: <your-token>' \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{ "name": "Fluffy", "strength": 12, "intelligence": 22, "speed": 21, "integrity": 66 }' \
+    https://wunder-pet-api-staging.herokuapp.com/pets
 
-#### Deploying
+[{"id":"d44c512d-65f2-4173-a7aa-a1ebc8cc52d6","name":"Fluffy","strength":12,"intelligence":22,"speed":21,"integrity":66}, ...]
+```
 
-## Running locally app
+#### `GET /pets/:id`
 
-`sbt ~run` - this will recompile if files change
+Get a pet by ID.
 
-## Running tests
+```
+$ curl \
+    -H 'X-Pets-Token: <your-token>' \
+    -H 'Accept: application/json' \
+    https://wunder-pet-api-staging.herokuapp.com/pets/d44c512d-65f2-4173-a7aa-a1ebc8cc52d6
 
-`sbt test` - one off test run
-`sbt ~test` - watch for file changes and re-run 
+{"id":"d44c512d-65f2-4173-a7aa-a1ebc8cc52d6","name":"Fluffy","strength":12,"intelligence":22,"speed":21,"integrity":66}
+```
 
-## Building artifact
+## Running Locally
 
-`sbt dist`
+You are welcome and encouraged to run the API locally on your machine. To do so, clone this repository and perform the following steps.
 
-## Databases
+### Dependencies
+
+* SBT (Scala Build Tool) &ndash; available via Homebrew
+* Postgres &ndash; available via Homebrew
 
 ### Setup
 
-You need to manually create the databases. For Postgres, you can use the [Postico app](https://eggerapps.at/postico/) or the [command line](https://www.postgresql.org/docs/9.1/static/manage-ag-createdb.html).
+Create test and development databases.
+
+```
+$ createdb pets_development
+$ createdb pets_test
+```
+
+(More on the Postgres `createdb` command [here](https://www.postgresql.org/docs/9.1/static/manage-ag-createdb.html).)
+
+Migrate the databases using the included `bin/migrateDB` script. The script requires a valid JDBC database connection string to run. You can specify one as the environment variable `JDBC_DATABASE_URL`:
+
+```
+$ env JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432/pets_development?user=[username]&password=[password]" \
+    ./bin/migrateDB
+```
+
+Or pass it directly to the script:
+
+```
+$ ./bin/migrateDB "jdbc:postgresql://localhost:5432/pets_test?user=[username]&password=[password]"
+```
+
+(More on the Postgres JDBC connection string [here](https://jdbc.postgresql.org/documentation/94/connect.html).)
 
 ### Running
 
-`./bin/migrateDB jdbc:postgresql://[host]:[port]/[db-name]?user=[username]&password=[password]`
+The app will expect the `JDBC_DATABASE_URL` environment variable in order to connect to the database, so ensure this variable is loaded into your environment before running the app.
 
-**See https://jdbc.postgresql.org/documentation/94/connect.html for details on the URL.**
+To run the app, use the SBT `run` command. Using `~run` (note the tilde) causes the app to recompile if files change.
 
-This command will need to be run once for each database, both `_development` and `_test`.
+```
+$ export JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432/pets_development?user=[username]&password=[password]"
+$ sbt ~run
+```
+
+### Testing
+
+As when running the app, ensure the appropriate `JDBC_DATABASE_URL` is in scope before running tests.
+
+To run the tests, use the SBT `test` (or its tilde-clad cousin, `~test`) command.
+
+```
+$ export JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432/pets_test?user=[username]&password=[password]"
+$ sbt test
+```
+
+---
+
+Happy battling!
