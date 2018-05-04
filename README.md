@@ -62,7 +62,6 @@ $ curl \
     -H 'X-Pets-Token: <your-token>' \
     -H 'Accept: application/json' \
     -H 'Content-Type: application/json' \
-    -d '{ "name": "Fluffy", "strength": 12, "intelligence": 22, "speed": 21, "integrity": 66 }' \
     https://wunder-pet-api-staging.herokuapp.com/pets
 
 [{"id":"d44c512d-65f2-4173-a7aa-a1ebc8cc52d6","name":"Fluffy","strength":12,"intelligence":22,"speed":21,"integrity":66}, ...]
