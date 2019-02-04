@@ -6,3 +6,7 @@ GET         /pets            com.wunder.pets.web.controllers.PetsController.all
 GET         /pets/:id        com.wunder.pets.web.controllers.PetsController.find(id: java.util.UUID)
 POST        /pets            com.wunder.pets.web.controllers.PetsController.create
 GET         /hello_world     com.wunder.pets.web.controllers.PetsController.hello
+
+OPTIONS     /pets            com.wunder.pets.web.controllers.PetsController.options
+OPTIONS     /pets/:id        com.wunder.pets.web.controllers.PetsController.options1(id: java.util.UUID)
+OPTIONS     /hello_world     com.wunder.pets.web.controllers.PetsController.options
