@@ -8,6 +8,11 @@ import com.wunder.pets.pets.{CreatePetForm, Pet}
 import com.wunder.pets.web.Serializers._
 import play.api.libs.json._
 import play.api.mvc.{Controller, _}
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.util.{Date,TimeZone}
 
 import scala.concurrent.ExecutionContext
 
@@ -31,6 +36,13 @@ class PetsController @Inject()(findPet: Find[Pet], createPet: Create[CreatePetFo
 
   def create = Action.async(parse.json) { request =>
     createEntity(request, createPet)
+  }
+
+  def hello = Action {
+    val nowAsISO = ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT )
+
+
+    Ok(Json.toJson(Map("greeting" -> "HELLO WORLD!", "timestamp" -> nowAsISO)))
   }
 }
 
