@@ -33,6 +33,7 @@ project/plugins/project/
 .idea/workspace.xml
 .idea/tasks.xml
 *.iml
+.envrc
 
 # Sensitive or high-churn files:
 .idea/dataSources/

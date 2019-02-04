@@ -86,10 +86,20 @@ You are welcome and encouraged to run the API locally on your machine. To do so,
 
 ### Dependencies
 
-* SBT (Scala Build Tool) &ndash; available via Homebrew
+* SBT 0.13.x (Scala Build Tool) &ndash; available via Homebrew
+* OpenJDK 8 (newer versions will not work)
 * Postgres &ndash; available via Homebrew
 
 ### Setup
+
+Install Java and SBT
+
+```
+brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk8
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+brew install sbt@0.13
+```
 
 Create test and development databases.
 
@@ -123,7 +133,7 @@ To run the app, use the SBT `run` command. Using `~run` (note the tilde) causes 
 
 ```
 $ export JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432/pets_development?user=[username]&password=[password]"
-$ sbt ~run
+$ sbt "~run"
 ```
 
 ### Testing
