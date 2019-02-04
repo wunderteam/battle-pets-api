@@ -5,8 +5,10 @@ import javax.inject.Inject
 import com.wunder.pets.web.filters.AuthFilter
 import play.api.http.DefaultHttpFilters
 import play.filters.gzip.GzipFilter
+import play.filters.cors.CORSFilter
 
 class Filters @Inject() (
   auth: AuthFilter,
-  gzip: GzipFilter
-) extends DefaultHttpFilters(auth, gzip)
+  gzip: GzipFilter,
+  cors: CORSFilter
+) extends DefaultHttpFilters(auth, gzip, cors)
