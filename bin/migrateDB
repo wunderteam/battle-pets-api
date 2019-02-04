@@ -7,4 +7,4 @@ if [ -z "$url" ]; then
   exit 1
 fi
 
-pushd database && sbt flywayMigrate -Dflyway.url=$url && popd
+pushd database && sbt -Dflyway.url=$url flywayMigrate && popd
