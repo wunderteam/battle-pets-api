@@ -8,7 +8,7 @@ import play.filters.gzip.GzipFilter
 import play.filters.cors.CORSFilter
 
 class Filters @Inject() (
+  cors: CORSFilter,
   auth: AuthFilter,
-  gzip: GzipFilter,
-  cors: CORSFilter
-) extends DefaultHttpFilters(auth, gzip, cors)
+  gzip: GzipFilter
+) extends DefaultHttpFilters(cors, auth, gzip)
