@@ -20,14 +20,6 @@ import scala.concurrent.ExecutionContext
 class PetsController @Inject()(findPet: Find[Pet], createPet: Create[CreatePetForm, Pet], allPets: All[Pet])
                               (implicit ec: ExecutionContext) extends Controller with CrudController {
 
-  def options = Action { request =>
-    NoContent.withHeaders()
-  }
-
-  def options1(id: UUID) = Action { request =>
-    NoContent.withHeaders()
-  }
-
   def all() = Action.async {
 //    Future.successful(Ok("Pets"))
     allPets().map(pets => Ok(Json.toJson(pets)))
