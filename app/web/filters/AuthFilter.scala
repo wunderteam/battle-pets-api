@@ -13,6 +13,10 @@ class AuthFilter @Inject()(config: Configuration)(implicit val mat: Materializer
   def apply(nextFilter: RequestHeader => Future[Result])
            (requestHeader: RequestHeader): Future[Result] = {
 
+   if (requestHeader.path == "/hello_world") {
+     nextFilter(requestHeader)
+   }
+   else {
     val result: Option[Boolean] = for {
       token <- requestHeader.headers.get(AuthFilter.X_PETS_TOKEN)
       configuredToken <- config.getString("pet.api.token")
@@ -21,6 +25,7 @@ class AuthFilter @Inject()(config: Configuration)(implicit val mat: Materializer
     val unauthorized = Future.successful(Results.Unauthorized)
 
     result.map(matches => if (matches) nextFilter(requestHeader) else unauthorized).getOrElse(unauthorized)
+    }
   }
 }
 
