@@ -40,8 +40,6 @@ class PetsController @Inject()(findPet: Find[Pet], createPet: Create[CreatePetFo
 
   def hello = Action {
     val nowAsISO = ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT )
-
-
     Ok(Json.toJson(Map("greeting" -> "HELLO WORLD!", "timestamp" -> nowAsISO)))
   }
 }

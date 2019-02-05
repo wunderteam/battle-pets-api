@@ -86,9 +86,9 @@ You are welcome and encouraged to run the API locally on your machine. To do so,
 
 ### Dependencies
 
-* SBT 0.13.x (Scala Build Tool) &ndash; available via Homebrew
+* SBT 0.13.x (Scala Build Tool) - available via Homebrew
 * OpenJDK 8 (newer versions will not work)
-* Postgres &ndash; available via Homebrew
+* Postgres - available via Homebrew
 
 ### Setup
 
