@@ -147,6 +147,22 @@ $ export JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432/pets_test?user=[use
 $ sbt test
 ```
 
+## Deployment
+
+### Heroku ENV Variables
+
+The follow are required to deploy the pet service to Heroku.
+
+`PET_API_TOKEN=UXhygiNEP1vYvRuPA4EluyJxLnscJ6uerTsUlnObFUqKxoyCnN`
+
+```
+$ sbt
+[sbt] $ playGenerateSecret
+```
+Use the generated secret to configure
+`APPLICATION_SECRET=<generated_secret>`
+
+
 ---
 
 Happy battling!
