@@ -151,7 +151,7 @@ $ sbt test
 
 ### Heroku ENV Variables
 
-The follow are required to deploy the pet service to Heroku.
+The following ENV variables need to be set in Heroku to run the app correctly.
 
 `PET_API_TOKEN=UXhygiNEP1vYvRuPA4EluyJxLnscJ6uerTsUlnObFUqKxoyCnN`
 
