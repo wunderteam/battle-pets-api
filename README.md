@@ -1,7 +1,5 @@
 # Pets API
 
-[![CircleCI](https://circleci.com/gh/wunderteam/battle-pets-api.svg?style=svg&circle-token=a3873feb3d77f83373634ede1de3cf521432f5d5)](https://circleci.com/gh/wunderteam/battle-pets-api)
-
 JSON API for provisioning and managing pets as part of the Wunder BattlePets coding challenge.
 
 ## Usage
